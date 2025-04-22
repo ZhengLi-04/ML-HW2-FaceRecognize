@@ -10,7 +10,7 @@ test_dir = os.path.join(output_dir, "test")
 test_out_dir = os.path.join(output_dir, "test_out")  # 数据集外测试集
 
 # 参数设置
-selected_subjects = 10  # 选择50个人作为训练和测试
+selected_subjects = 10  # 选择10个人作为训练和测试
 out_subjects = 10  # 数据集外测试集人数
 valid_angles_train = ["051"]  # 训练集角度
 valid_angles_test = ["051", "140"]  # 测试集角度
@@ -25,8 +25,8 @@ os.makedirs(test_out_dir, exist_ok=True)
 subject_ids = sorted(set(f.split("_")[0] for f in os.listdir(data_dir) if f.endswith(".png")))
 random.seed(40)  # 固定随机种子
 selected_ids = random.sample(subject_ids, selected_subjects)
-remaining_ids = list(set(subject_ids) - set(selected_ids))  # 剩余的200人
-out_ids = random.sample(remaining_ids, out_subjects)  # 随机选择50人作为数据集外测试集
+remaining_ids = list(set(subject_ids) - set(selected_ids))  # 剩余人
+out_ids = random.sample(remaining_ids, out_subjects) 
 
 # 数据划分
 for subject_id in selected_ids:
@@ -37,7 +37,7 @@ for subject_id in selected_ids:
         f for f in subject_files
         if f.split("_")[3] in valid_angles_train and f.split("_")[4] in valid_lighting
     ]
-    train_files = random.sample(train_files, min(6, len(train_files)))  # 每人最多10张
+    train_files = random.sample(train_files, min(6, len(train_files)))  # 每人最多6张
 
     # 从剩余图片中筛选测试集图片
     remaining_files = set(subject_files) - set(train_files)  # 确保测试集不与训练集重复
